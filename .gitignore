@@ -1,0 +1,17 @@
+.env
+.env.testing
+
+tests/controllers/cassettes/auth_bad
+tests/controllers/cassettes/auth_good
+
+sql_app.db
+sql_test.db
+
+.venv/
+**/__pycache__
+.pytest_cache/
+youtube_podcast_api.egg-info/
+
+.vscode/
+node_modules/
+TODO

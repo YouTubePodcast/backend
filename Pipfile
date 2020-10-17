@@ -1,0 +1,27 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+debugpy = ">=1.0.0rc2"
+youtube_podcast_api = {editable = true,path = "."}
+pytest = "*"
+requests = "*"
+pytest-vcr = "*"
+flake8 = "*"
+
+[packages]
+uvicorn = "*"
+fastapi = "*"
+python-dotenv = "*"
+google-auth = "*"
+sqlalchemy = "*"
+alembic = "*"
+passlib = {extras = ["bcrypt"],version = "*"}
+
+[requires]
+python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
