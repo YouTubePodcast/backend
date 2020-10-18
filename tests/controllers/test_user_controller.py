@@ -44,3 +44,10 @@ class TestAUserController(YTPTest):
         """It should raise an exception if the user is already there"""
         with pytest.raises(AlreadyThereException):
             self.UC._new_user("test_user0")
+
+    def test_should_make_a_new_user_as_admin_if_no_admin_exist(self):
+        """It should make a new user as admin if no admin exist"""
+        user1 = self.UC._new_user("user_1")
+        user2 = self.UC._new_user("user_2")
+        assert user1.admin is True
+        assert user2.admin is False

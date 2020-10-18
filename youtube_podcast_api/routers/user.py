@@ -15,6 +15,6 @@ async def create_user(userLogin: UserLogin, db: Session = Depends(get_db)):
         user = UC(db).create_user(user=userLogin)
     except AlreadyThereException:
         raise HTTPException(status_code=409, detail="User already registered")
-    except Exception:
+    except Exception as e:  # NOQA
         raise HTTPException(status_code=500, detail="Could not create the user")
     return UserToken.construct(token=user.token)

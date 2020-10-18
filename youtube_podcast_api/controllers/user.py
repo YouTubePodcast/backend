@@ -32,7 +32,10 @@ class UserController:
             raise AlreadyThereException()
         hashed_google_id = hash_string(google_id)
         token = self.generate_token()
-        db_user = User(hashed_google_id=hashed_google_id, token=token)
+        db_user = User(
+            hashed_google_id=hashed_google_id,
+            token=token,
+            admin=self._should_be_admin())
         self.db.add(db_user)
         self.db.commit()
         self.db.refresh(db_user)
@@ -46,6 +49,10 @@ class UserController:
     def _does_user_exist(self, google_id: str) -> bool:
         """Return True if the user with the specified google id exists"""
         return self.get_user(google_id) is not None
+
+    def _should_be_admin(self) -> bool:
+        """Return True if an admin is missing"""
+        return len(self.db.query(User).filter(User.admin == True).all()) == 0  # NOQA, can's use is True here
 
 
 class AlreadyThereException(Exception):
