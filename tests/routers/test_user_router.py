@@ -6,7 +6,7 @@ from tests.typing import CLIENT, JRESP, YTPTest
 class TestAUserRouter(YTPTest):
     """Test: A User Router..."""
 
-    def test_should_be_able_to_create_a_new_user(self, client: CLIENT, jresp: JRESP, UC, with_fake_google):
+    def test_should_be_able_to_create_a_new_user(self, client: CLIENT, jresp: JRESP, UC, with_valid_google_id):
         """It should be able to create a new user"""
         data = {"idToken": "a_id_token"}
         r = client.put("/user/", json=data)

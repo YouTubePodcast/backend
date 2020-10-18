@@ -1,8 +1,8 @@
 .env
 .env.testing
 
-tests/controllers/cassettes/auth_bad
-tests/controllers/cassettes/auth_good
+tests/cassettes/auth_bad
+tests/cassettes/auth_good
 
 sql_app.db
 sql_test.db

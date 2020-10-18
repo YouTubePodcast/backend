@@ -5,7 +5,7 @@ import pytest
 from tests.typing import YTPTest
 
 from youtube_podcast_api.models.user import User
-from youtube_podcast_api.controllers.auth import verify_hash
+from youtube_podcast_api.utils import verify_hash
 
 
 @pytest.mark.usefixtures("reset_db_after", "UC")

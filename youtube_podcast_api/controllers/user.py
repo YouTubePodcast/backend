@@ -2,7 +2,7 @@ from typing import Union
 from uuid import uuid4
 from sqlalchemy.orm import Session
 
-from youtube_podcast_api.controllers.auth import verify_google_auth, hash_string, verify_hash
+from youtube_podcast_api.utils import verify_google_auth, hash_string, verify_hash
 from youtube_podcast_api.models.user import User
 from youtube_podcast_api.schemas.user import UserLogin
 
@@ -20,6 +20,11 @@ class UserController:
             return selected_users[0]
         else:
             return None
+
+    def get_user_from_id_token(self, id_token: str) -> User:
+        """Verify the id token and return the corresponding user from the db"""
+        google_id = verify_google_auth(id_token)
+        return self.get_user(google_id)
 
     def create_user(self, user: UserLogin) -> User:
         """Create a user starting from a valid google user id"""

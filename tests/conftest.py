@@ -17,7 +17,7 @@ def test_db_session_maker() -> Session:
 
     with patch("youtube_podcast_api.config.get_settings", new=get_test_settings), \
             patch("youtube_podcast_api.database.get_settings", new=get_test_settings), \
-            patch("youtube_podcast_api.controllers.auth.get_settings", new=get_test_settings):
+            patch("youtube_podcast_api.utils.get_settings", new=get_test_settings):
         from youtube_podcast_api.database import SessionLocal
         return SessionLocal
 
@@ -68,12 +68,20 @@ def client():
     yield TestClient(app)
 
 
-@pytest.fixture(scope="function")
-def with_fake_google():
-    """Fake the whole token authorization by google lib and server"""
+def valid_google_id(google_id: str = None):
+    """This can be used directly as context manager if a specific google_id is needed"""
     def fake_google(id_token: str) -> str:
-        return f"ID_FROM_{id_token}"
-    with patch("youtube_podcast_api.controllers.user.verify_google_auth", new=fake_google):
+        if google_id is None:
+            return f"ID_FROM_{id_token}"
+        else:
+            return google_id
+    return patch("youtube_podcast_api.controllers.user.verify_google_auth", new=fake_google)
+
+
+@pytest.fixture(scope="function")
+def with_valid_google_id():
+    """Fake the whole token authorization by google lib and server"""
+    with valid_google_id():
         yield
 
 
@@ -81,7 +89,9 @@ def get_user0(session: Session):
     """Create a test user or return it if it already exists"""
     from youtube_podcast_api.controllers.user import UserController as UC
     from youtube_podcast_api.models.user import User
-    users = session.query(User).filter(User.hashed_google_id == "test_user0").all()
+    from youtube_podcast_api.utils import verify_hash
+    users = session.query(User).all()
+    users = list(filter(lambda user: verify_hash("test_user0", user.hashed_google_id), users))
     if len(users) > 0:
         return users[0]
     else:

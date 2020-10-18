@@ -2,7 +2,7 @@ import pytest
 import vcr
 from tests.conftest import Secrets
 
-from youtube_podcast_api.controllers.auth import verify_google_auth, hash_string, verify_hash
+from youtube_podcast_api.utils import verify_google_auth, hash_string, verify_hash
 
 
 @pytest.mark.skip
